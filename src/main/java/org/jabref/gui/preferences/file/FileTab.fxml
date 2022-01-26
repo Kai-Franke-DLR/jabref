@@ -41,6 +41,8 @@
         <CheckBox fx:id="autosaveLocalLibraries" text="%Autosave local libraries"/>
         <Button fx:id="autosaveLocalLibrariesHelp"/>
     </HBox>
+    
+    <CheckBox fx:id="autosaveSharedLibraries" text="%Autosave shared libraries"/>
 
     <CheckBox fx:id="alwaysReformatBib" text="%Always reformat BIB file on save and export"/>
 </fx:root>

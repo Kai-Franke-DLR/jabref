@@ -29,6 +29,8 @@ public class FileTab extends AbstractPreferenceTabView<FileTabViewModel> impleme
     @FXML private CheckBox autosaveLocalLibraries;
     @FXML private Button autosaveLocalLibrariesHelp;
 
+    @FXML private CheckBox autosaveSharedLibraries;
+
     public FileTab() {
         ViewLoader.view(this)
                   .root(this)
@@ -47,6 +49,8 @@ public class FileTab extends AbstractPreferenceTabView<FileTabViewModel> impleme
 
         alwaysReformatBib.selectedProperty().bindBidirectional(viewModel.alwaysReformatBibProperty());
         autosaveLocalLibraries.selectedProperty().bindBidirectional(viewModel.autosaveLocalLibrariesProperty());
+
+        autosaveSharedLibraries.selectedProperty().bindBidirectional(viewModel.autosaveSharedLibrariesProperty());
 
         ActionFactory actionFactory = new ActionFactory(Globals.getKeyPrefs());
         actionFactory.configureIconButton(StandardActions.HELP, new HelpAction(HelpFile.AUTOSAVE), autosaveLocalLibrariesHelp);

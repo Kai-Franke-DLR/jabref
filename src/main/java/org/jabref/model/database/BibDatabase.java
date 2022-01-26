@@ -24,6 +24,7 @@ import javafx.collections.ObservableList;
 import org.jabref.logic.bibtex.FieldWriter;
 import org.jabref.model.database.event.EntriesAddedEvent;
 import org.jabref.model.database.event.EntriesRemovedEvent;
+import org.jabref.model.database.event.EntriesSavedEvent;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.BibtexString;
 import org.jabref.model.entry.Month;
@@ -252,6 +253,37 @@ public class BibDatabase {
         if (anyRemoved) {
             eventBus.post(new EntriesRemovedEvent(toBeDeleted, eventSource));
         }
+    }
+
+    public synchronized void saveEntry(BibEntry bibEntry) {
+        saveEntries(Collections.singletonList(bibEntry));
+    }
+
+    public synchronized void saveEntry(BibEntry bibEntry, EntriesEventSource eventSource) {
+        saveEntries(Collections.singletonList(bibEntry), eventSource);
+    }
+
+    /**
+     * Saves the given entries.
+     * The entries saved based on the id {@link BibEntry#getId()}
+     *
+     * @param toBeSaved Entries to save
+     */
+    public synchronized void saveEntries(List<BibEntry> toBeSaved) {
+        saveEntries(toBeSaved, EntriesEventSource.LOCAL);
+    }
+
+    /**
+     * Saves the given entries.
+     * The entries are saved based on the id {@link BibEntry#getId()}
+     *
+     * @param toBeSaved Entry to save
+     * @param eventSource Source the event is sent from
+     */
+    public synchronized void saveEntries(List<BibEntry> toBeSaved, EntriesEventSource eventSource) {
+        Objects.requireNonNull(toBeSaved);
+
+        eventBus.post(new EntriesSavedEvent(toBeSaved, eventSource));
     }
 
     /**

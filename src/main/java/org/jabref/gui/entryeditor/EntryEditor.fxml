@@ -32,6 +32,14 @@
                 </Label>
             </Group>
             <Pane prefHeight="10" VBox.vgrow="ALWAYS"/>
+            <Button styleClass="icon-button,narrow" onAction="#saveEntry">
+                <graphic>
+                    <JabRefIconView glyph="SAVE"/>
+                </graphic>
+                <tooltip>
+                    <Tooltip text="%Save entry"/>
+                </tooltip>
+            </Button>
             <Button fx:id="typeChangeButton" styleClass="icon-button,narrow">
                 <graphic>
                     <JabRefIconView glyph="ENTRY_TYPE"/>

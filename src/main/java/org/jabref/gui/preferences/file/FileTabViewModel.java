@@ -18,6 +18,7 @@ public class FileTabViewModel implements PreferenceTabViewModel {
     private final StringProperty resolveStringsForFieldsProperty = new SimpleStringProperty("");
     private final BooleanProperty alwaysReformatBibProperty = new SimpleBooleanProperty();
     private final BooleanProperty autosaveLocalLibraries = new SimpleBooleanProperty();
+    private final BooleanProperty autosaveSharedLibraries = new SimpleBooleanProperty();
 
     private final PreferencesService preferences;
     private final ImportExportPreferences importExportPreferences;
@@ -37,6 +38,7 @@ public class FileTabViewModel implements PreferenceTabViewModel {
         resolveStringsForFieldsProperty.setValue(importExportPreferences.getResolvableFields());
         alwaysReformatBibProperty.setValue(importExportPreferences.shouldAlwaysReformatOnSave());
         autosaveLocalLibraries.setValue(preferences.shouldAutosave());
+        autosaveSharedLibraries.setValue(preferences.shouldAutosaveShared());
     }
 
     @Override
@@ -49,6 +51,7 @@ public class FileTabViewModel implements PreferenceTabViewModel {
         importExportPreferences.setAlwaysReformatOnSave(alwaysReformatBibProperty.getValue());
 
         preferences.storeShouldAutosave(autosaveLocalLibraries.getValue());
+        preferences.storeShouldAutosaveShared(autosaveSharedLibraries.getValue());
     }
 
     // General
@@ -82,5 +85,9 @@ public class FileTabViewModel implements PreferenceTabViewModel {
     // Autosave
     public BooleanProperty autosaveLocalLibrariesProperty() {
         return autosaveLocalLibraries;
+    }
+
+    public BooleanProperty autosaveSharedLibrariesProperty() {
+        return autosaveSharedLibraries;
     }
 }

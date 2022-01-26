@@ -412,6 +412,26 @@ public class LibraryTab extends Tab {
         delete(false, Collections.singletonList(entry));
     }
 
+    /**
+     * updates the selected entries to the database
+     */
+    private void save(List<BibEntry> entries) {
+        if (entries.isEmpty()) {
+            return;
+        }
+
+        bibDatabaseContext.getDatabase().saveEntries(entries);
+
+        this.changedProperty.setValue(true);
+
+        // prevent the main table from loosing focus
+        // mainTable.requestFocus();
+    }
+
+    public void save(BibEntry entry) {
+        save(Collections.singletonList(entry));
+    }
+
     public void registerUndoableChanges(List<FieldChange> changes) {
         NamedCompound ce = new NamedCompound(Localization.lang("Save actions"));
         for (FieldChange change : changes) {

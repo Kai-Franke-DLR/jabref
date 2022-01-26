@@ -232,7 +232,11 @@ public interface PreferencesService {
 
     boolean shouldAutosave();
 
+    boolean shouldAutosaveShared();
+
     void storeShouldAutosave(boolean shouldAutosave);
+
+    void storeShouldAutosaveShared(boolean shouldAutosave);
 
     FileLinkPreferences getFileLinkPreferences();
 

@@ -267,6 +267,7 @@ public class JabRefPreferences implements PreferencesService {
     public static final String KEY_GEN_FIRST_LETTER_A = "keyGenFirstLetterA";
     public static final String ALLOW_INTEGER_EDITION_BIBTEX = "allowIntegerEditionBibtex";
     public static final String LOCAL_AUTO_SAVE = "localAutoSave";
+    public static final String SHARED_AUTO_SAVE = "sharedAutoSave";
     public static final String AUTOLINK_REG_EXP_SEARCH_EXPRESSION_KEY = "regExpSearchExpression";
     public static final String AUTOLINK_USE_REG_EXP_SEARCH_KEY = "useRegExpSearch";
     // bibLocAsPrimaryDir is a misleading antique variable name, we keep it for reason of compatibility
@@ -657,6 +658,7 @@ public class JabRefPreferences implements PreferencesService {
 
         defaults.put(AUTOLINK_EXACT_KEY_ONLY, Boolean.FALSE);
         defaults.put(LOCAL_AUTO_SAVE, Boolean.FALSE);
+        defaults.put(SHARED_AUTO_SAVE, Boolean.FALSE);
         defaults.put(ALLOW_INTEGER_EDITION_BIBTEX, Boolean.FALSE);
         // Curly brackets ({}) are the default delimiters, not quotes (") as these cause trouble when they appear within the field value:
         // Currently, JabRef does not escape them
@@ -2280,6 +2282,16 @@ public class JabRefPreferences implements PreferencesService {
     @Override
     public void storeShouldAutosave(boolean shouldAutosave) {
         putBoolean(LOCAL_AUTO_SAVE, shouldAutosave);
+    }
+
+    @Override
+    public boolean shouldAutosaveShared() {
+        return getBoolean(SHARED_AUTO_SAVE);
+    }
+
+    @Override
+    public void storeShouldAutosaveShared(boolean shouldAutosave) {
+        putBoolean(SHARED_AUTO_SAVE, shouldAutosave);
     }
 
     //*************************************************************************************************************

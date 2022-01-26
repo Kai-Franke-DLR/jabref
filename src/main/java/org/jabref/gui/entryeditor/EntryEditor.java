@@ -215,6 +215,11 @@ public class EntryEditor extends BorderPane {
     }
 
     @FXML
+    private void saveEntry() {
+        libraryTab.save(entry);
+    }
+
+    @FXML
     private void deleteEntry() {
         libraryTab.delete(entry);
     }
