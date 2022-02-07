@@ -1,15 +1,7 @@
 package org.jabref.logic.shared;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import org.jabref.gui.Globals;
 import org.jabref.logic.citationkeypattern.GlobalCitationKeyPattern;
 import org.jabref.logic.exporter.BibDatabaseWriter;
@@ -33,11 +25,13 @@ import org.jabref.model.metadata.MetaData;
 import org.jabref.model.metadata.event.MetaDataChangedEvent;
 import org.jabref.model.util.FileUpdateMonitor;
 import org.jabref.preferences.PreferencesService;
-
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Synchronizes the shared or local databases with their opposite side. Local changes are pushed by {@link EntriesEvent}
@@ -105,10 +99,21 @@ public class DBMSSynchronizer implements DatabaseSynchronizer {
         // While synchronizing the local database (see synchronizeLocalDatabase() below), some EntriesEvents may be posted.
         // In this case DBSynchronizer should not try to update the bibEntry entry again (but it would not harm).
         if (isPresentLocalBibEntry(bibEntry) && isEventSourceAccepted(event) && checkCurrentConnection() && !event.isFilteredOut() && shouldAutosave) {
+            long[] times = new long[5];
+            String[] names = { "synchronizeLocalMetaData", "pullWithLastEntry", "synchronizeSharedEntry", "synchronizeLocalDatabase" };
+            times [0] = System.nanoTime();
             synchronizeLocalMetaData();
+            times [1] = System.nanoTime();
             pullWithLastEntry(bibEntry);
+            times [2] = System.nanoTime();
             synchronizeSharedEntry(bibEntry);
+            times [3] = System.nanoTime();
             synchronizeLocalDatabase(); // Pull changes for the case that there were some
+            times [4] = System.nanoTime();
+
+            for (int i = 1; i < times.length; i++) {
+                LOGGER.info("Time (ms) for {}: {}", names[i-1], (times[i] - times[i-1])/1000000);
+            }
         } else {
             // Set new BibEntry that has been changed last
             lastEntryChanged = Optional.of(bibEntry);
